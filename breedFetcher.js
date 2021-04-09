@@ -1,6 +1,7 @@
 // REQUIRE
 
 const request = require('request');
+const { parse } = require('request/lib/cookies');
 
 /* BREEDFETCHER FUNCTION 1.0
 
@@ -30,10 +31,15 @@ breedFetcher();
 
 const fetchBreedDescription = function(breedName, callback) {
   request(`https://api.thecatapi.com/v1/breeds/search?q=${breedName}`, (error, response, body) => {
-    // if (error) {
-    //   console.log("There was this error:", error);
-    // }
     const data = JSON.parse(body);
+    // console.log(data);
+    if (error) {
+      callback(error, null);
+    } else if (data.length === 0) {
+      callback(error, null);
+    } else {
+      callback(error, data[0].description);
+    }
     // console.log("Description:", data[0].description);
   });
 };
